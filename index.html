@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="script.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Types of Apes</h1>
+    </header>
+    <div class="columns two-columns">
+        <a href="#" id="add-link">Add Ape</a>
+        <div id="ape-list" class="columns"></div>
+        <div id="ape-details-column">
+            <h2>Info</h2>
+            <div id="ape-details"></div>
+        </div>
+    </div>
+    <div id="add-edit-ape-container" class="dialog transparent">
+        <span class="close">&times;</span>
+        <h3 id="add-edit-title">Ape</h3>
+        <form id="add-edit-ape-form" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="_id" value="-1" />
+            <p>
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+            </p>
+            <p>
+                <label for="sciName">Scientific Name:</label>
+                <input type="text" id="sciName" name="sciName" required />
+            </p>
+            <p>
+                <label for="divergeDate">Diverge Date:</label>
+                <input type="text" id="divergeDate" name="divergeDate" required>
+            </p>
+            <p>
+                <label for="location">Location:</label>
+                <input type="text" id="location" name="location" required />
+            </p>
+            <p>
+                <label for="apeType">Ape Type:</label>
+                <input type="text" id="apeType" name="apeType" required>
+            </p>
+            <p>
+                <label for="img">Upload Image:</label>
+                <input type="file" id="img" name="img" />
+            </p>
+            <p id="facts-p">
+                <label class="inline">Fun Facts:</label>
+                <a href="#" id="add-facts">Add a Fun Fact</a>
+                <section id="facts-boxes"></section>
+            </p>
+            <p>
+                <button type="submit">Submit</button>
+            </p>
+        </form>
+    </div>
+</body>
+</html>

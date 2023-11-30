@@ -1,0 +1,159 @@
+:root {
+    --primary: #2AAA8A;
+}
+
+
+/* Structure */
+
+body {
+    font-family: 'Times New Roman', Times, serif;
+    background-color: darkgreen;
+}
+
+.ape {
+    padding: 10px;
+    margin: 10px;
+    background: darkgreen;
+    border-radius: 10px;
+    border: 5px solid var(--primary);
+}
+
+.ape img {
+    max-width: 90%;
+    display: block;
+    margin: auto;
+}
+
+#ape-details-column {
+    padding: 10px;
+    margin: 10px;
+    background: darkgreen;
+    border-radius: 10px;
+    border: 5px solid var(--primary);
+}
+
+#add-link {
+    font-size: 1.5em;
+    padding: 10px;
+    border-radius: 10px;
+    border: 5px solid var(--primary);
+}
+
+#edit-link {
+    float: right;
+    margin-right: 10px;
+}
+
+#delete-link {
+    float: right;
+}
+
+#add-edit-ape-container {
+    padding: 10px;
+    margin: 10px;
+    background: #F6F7EB;
+    border-radius: 5px;
+    border: 5px solid var(--primary);
+}
+
+section,
+#ape-details-column {
+    transition: transform 0.25s, z-index 0s, box-shadow 0.25s;
+    z-index: 1;
+}
+
+section:hover,
+#ape-details-column:hover {
+    transform: scale(1.01);
+    z-index: 10;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+
+/* Form */
+
+label {
+    display: block;
+}
+
+.inline {
+    display: inline;
+}
+
+#ape-p input {
+    margin-top: 5px;
+}
+
+#add-ape {
+    color: #2AAA8A;
+    font-size: 0.75em;
+    text-align: right;
+}
+
+
+/*Close Button*/
+
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 24px;
+    font-weight: bold;
+    padding: 0px 5px;
+}
+
+.close:hover,
+.close:focus {
+    color: #fff;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+/* Typography */
+
+#main-nav-items {
+    font-size: 1.25em;
+}
+
+a {
+    text-decoration: none;
+}
+
+h1,
+h2,
+a {
+    color: #343d46;
+}
+
+h1 {
+    text-align: center;
+}
+
+.hidden {
+    display: none;
+}
+
+.transparent {
+    opacity: 0;
+}
+
+
+/* Larger Resolutions */
+
+@media (min-width: 600px) {
+    .columns {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+   
+    .ape {
+        flex: 25%;
+        flex-grow: 0;
+    }
+
+    #add-edit-recipe-container {
+        max-width: 30%;
+        margin: auto;
+    }
+}
