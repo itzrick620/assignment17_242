@@ -6,14 +6,34 @@ app.use(express.static("public"));
 app.use(express.json());
 const cors = require("cors");
 app.use(cors());
+const mongoose = require("mongoose");
 
 const upload = multer({ dest: __dirname + "/public/images" });
+
+mongoose
+    .connect("mongodb+srv://itzrick620:Sths2022@cluster0.ckyowgv.mongodb.net/?retryWrites=true&w=majority")
+    .then(() => {
+        console.log("Connected to mongodb")
+    })
+    .catch((error) => console.log("Couldn't connect to mongodb", error));
 
 app.get("/", (req, res) => {
     res.sendFile(__dirname + "/index.html");
 });
 
-let apes = [{
+const apeSchema = new mongoose.Schema({
+    name:String,
+    sciName:String,
+    divergeDate:String,
+    location:String,
+    apeType:String,
+    img:String,
+    funFacts:[String]
+});
+
+const Ape = mongoose.model("ape", apeSchema);
+
+/*let apes = [{
         _id: 1,
         name: "Orangutan",
         sciName: "Pongo",
@@ -97,11 +117,16 @@ let apes = [{
             "They are highly territorial",
         ],
     },
-];
+]; */
 
 app.get("/api/apes", (req, res) => {
-    res.send(apes);
+    getApes(res);
 });
+
+const getApes = async (res) => {
+    const apes = await Ape.find();
+    res.send(apes);
+}
 
 app.post("/api/apes", upload.single("img"), (req, res) => {
     const result = validateApe(req.body);
@@ -124,16 +149,16 @@ app.post("/api/apes", upload.single("img"), (req, res) => {
     if (req.file) {
         ape.img = "images/" + req.file.filename;
     }
-
-    apes.push(ape);
-    res.send(apes);
+    
+    createApe(ape, res);
 });
 
+const createApe = async (res, ape) => {
+    const result = await ape.save();
+    res.send(ape);
+}
+
 app.put("/api/apes/:id", upload.single("img"), (req, res) => {
-    const id = parseInt(req.params.id);
-
-    const ape = apes.find((r) => r._id === id);;
-
     const result = validateApe(req.body);
 
     if (result.error) {
@@ -141,35 +166,34 @@ app.put("/api/apes/:id", upload.single("img"), (req, res) => {
         return;
     }
 
-    ape.name = req.body.name;
-    ape.sciName = req.body.sciName;
-    ape.divergeDate = req.body.divergeDate;
-    ape.location = req.body.location;
-    ape.apeType = req.body.apeType;
-    ape.funFacts = req.body.funFacts.split(",");
+    updateApe(req, res);
+});
 
-    if (req.file) {
-        ape.img = "images/" + req.file.filename;
+const updateApe = async (req, res) => {
+    let fieldsToUpdate = {
+        name: req.body.name,
+        sciName: req.body.sciName,
+        divergeDate: req.body.divergeDate,
+        location: req.body.location,
+        apeType: req.body.apeType,
+        funFacts: req.body.funFacts.split(",")
+    };
+
+    if(req.file) {
+        fieldsToUpdate.img = "images/" + req.file.filename;
     }
 
+    const result = await Ape.updateOne({_id: req.params.id}, fieldsToUpdate);
+    const ape = await Ape.findById(req.params.id);
     res.send(ape);
-});
+};
 
 app.delete("/api/apes/:id", upload.single("img"), (req, res) => {
-    const id = parseInt(req.params.id);
-
-    const ape = apes.find((t) => t._id === id);
-
-    if (!ape) {
-        res.status(404).send("The ape was not found");
-        return;
-    }
-
-    const index = apes.indexOf(ape);
-    apes.splice(index, 1);
-    res.send(ape);
-
+    removeApe(res, req.params.id);
 });
+const removeApe = async (res, id) => {
+    const ape = await Ape.findByIdAndDelete(id);
+}
 
 const validateApe = (ape) => {
     const schema = Joi.object({
