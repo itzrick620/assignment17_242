@@ -31,7 +31,7 @@ const apeSchema = new mongoose.Schema({
     funFacts:[String]
 });
 
-const Ape = mongoose.model("ape", apeSchema);
+const Ape = mongoose.model("Ape", apeSchema);
 
 /*let apes = [{
         _id: 1,
@@ -136,15 +136,14 @@ app.post("/api/apes", upload.single("img"), (req, res) => {
         return;
     }
 
-    const ape = {
-        _id: apes.length + 1,
+    const ape = new Ape({
         name: req.body.name,
         sciName: req.body.sciName,
         divergeDate: req.body.divergeDate,
         location: req.body.location,
         apeType: req.body.apeType,
         funFacts: req.body.funFacts.split(",")
-    }
+    })
 
     if (req.file) {
         ape.img = "images/" + req.file.filename;
@@ -193,6 +192,7 @@ app.delete("/api/apes/:id", upload.single("img"), (req, res) => {
 });
 const removeApe = async (res, id) => {
     const ape = await Ape.findByIdAndDelete(id);
+    res.send(ape);
 }
 
 const validateApe = (ape) => {
